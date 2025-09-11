@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+  <h1>Bienvenido a la Clínica del PC</h1>
+  <p>Este sistema gestiona la recepción, diagnóstico y entrega de equipos.</p>
+  <a href="{% url 'login' %}">
+    <button>Ir al login</button>
+  </a>
+{% endblock %}

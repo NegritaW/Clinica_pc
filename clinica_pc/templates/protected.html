@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Área protegida{% endblock %}
+{% block content %}
+  <p>Estás autenticado mediante sesión. Esto prueba que <code>request.session['autenticado']</code> funciona.</p>
+  <p><a href="{% url 'login:logout' %}">Cerrar sesión</a></p>
+{% endblock %}
