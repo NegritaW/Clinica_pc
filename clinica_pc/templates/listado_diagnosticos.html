@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Listado de diagnósticos{% endblock %}
+{% block content %}
+<h2>Listado de diagnósticos</h2>
+
+{% if diagnosticos %}
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Cliente</th>
+      <th>Estudiante</th>
+      <th>Diagnóstico</th>
+      <th>Solución</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    {% for diag in diagnosticos %}
+      <tr>
+        <td>{{ diag.nombre }}</td>
+        <td>{{ diag.estudiante }}</td>
+        <td>{{ diag.diagnostico }}</td>
+        <td>{{ diag.solucion }}</td>
+        <td>{{ diag.estado }}</td>
+        <td>
+          <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}">
+            {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
+          </a>
+          |
+          <a href="{% url 'diagnostico_eliminar' diag.nombre %}"
+             onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');">
+             Eliminar
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>No hay diagnósticos registrados aún.</p>
+{% endif %}
+
+<hr>
+
+<h3>Equipos pendientes de diagnóstico</h3>
+{% if equipos_sin_diag %}
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Cliente</th>
+      <th>Tipo</th>
+      <th>Problema</th>
+      <th>Acción</th>
+    </tr>
+    {% for equipo in equipos_sin_diag %}
+      <tr>
+        <td>{{ equipo.nombre }}</td>
+        <td>{{ equipo.tipo }}</td>
+        <td>{{ equipo.problema }}</td>
+        <td>
+          <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.nombre }}">Asignar diagnóstico</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>Todos los equipos tienen diagnóstico asignado.</p>
+{% endif %}
+
+<p><a href="{% url 'protected' %}">Volver al menú</a></p>
+{% endblock %}

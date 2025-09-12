@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Asignar diagnóstico{% endblock %}
+{% block content %}
+  <h2>Asignar equipo a estudiante</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <label>Estudiante:
+      <input type="text" name="estudiante" required>
+    </label>
+
+    <label>Equipo:
+      <select name="equipo" required>
+        <option value="">-- Seleccionar equipo --</option>
+        {% for e in equipos %}
+          <option value="{{ e.nombre }}">{{ e.nombre }} — {{ e.tipo }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <button type="submit">Asignar</button>
+  </form>
+
+  {% if mensaje %}
+    <p>{{ mensaje }}</p>
+  {% endif %}
+
+  <p><a href="{% url 'diagnostico_listado' %}">Ver diagnósticos</a></p>
+  <p><a href="{% url 'protected' %}">Volver al menú</a></p>
+{% endblock %}
