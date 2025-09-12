@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
+from functools import wraps
 
-# Credenciales fijas
 VALID_USERNAME = 'inacap'
 VALID_PASSWORD = 'clinica2025'
 
@@ -9,25 +9,33 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
+
         if username == VALID_USERNAME and password == VALID_PASSWORD:
+            # guardar la sesión
             request.session['autenticado'] = True
-            return redirect('/recepcion/registrar/')
+            # debug: muestra en consola del servidor el contenido de la sesión
+            print("SESSION after login:", dict(request.session.items()))
+            # redirigir a protegido
+            return redirect('protected')
         else:
             error = 'Usuario o clave incorrectos.'
     return render(request, 'login.html', {'error': error})
 
 def logout_view(request):
-    request.session.pop('autenticado', None)
-    return redirect('login:login')
+    # limpiar sesión
+    request.session.flush()
+    return redirect('home')  # o 'login' si prefieres
 
-# Decorador para proteger vistas
 def session_required(view_func):
+    @wraps(view_func)
     def wrapper(request, *args, **kwargs):
+        # debug: imprimir estado de sesión en consola
+        print("SESSION on protected check:", dict(request.session.items()))
         if not request.session.get('autenticado', False):
-            return redirect('login:login')
+            return redirect('login')
         return view_func(request, *args, **kwargs)
     return wrapper
 
 @session_required
 def protected_view(request):
-    return render(request, 'protected.html', {})
+    return render(request, 'protected.html')
