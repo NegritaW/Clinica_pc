@@ -1,6 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Área protegida{% endblock %}
+{% block title %}Menú principal{% endblock %}
 {% block content %}
-  <p>Has iniciado sesion correctamente. Esto prueba que <code>request.session['autenticado']</code> funciona.</p>
+  <h2>Bienvenido al sistema de Clínica PC</h2>
+  <p>Has iniciado sesión correctamente.</p>
+
+  <ul>
+    <li><a href="{% url 'registrar_equipo' %}">Recepción de equipos</a></li>
+    <li><a href="#">Diagnóstico (pendiente)</a></li>
+    <li><a href="#">Entrega (pendiente)</a></li>
+  </ul>
+
   <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>
 {% endblock %}

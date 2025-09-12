@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Listado de equipos{% endblock %}
+{% block content %}
+  <h2>Listado de equipos registrados</h2>
+
+  {% if equipos %}
+    <table border="1" cellpadding="5">
+      <tr>
+        <th>Cliente</th>
+        <th>Tipo</th>
+        <th>Problema</th>
+        <th>Acciones</th>
+      </tr>
+      {% for equipo in equipos %}
+        <tr>
+          <td>{{ equipo.nombre }}</td>
+          <td>{{ equipo.tipo }}</td>
+          <td>{{ equipo.problema }}</td>
+          <td>
+            <a href="{% url 'detalle_equipo' equipo.nombre %}">Ver detalle</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No hay equipos registrados aún.</p>
+  {% endif %}
+
+  <p><a href="{% url 'registrar_equipo' %}">Registrar nuevo equipo</a></p>
+  <p><a href="{% url 'protected' %}">Volver al menú</a></p>
+{% endblock %}
