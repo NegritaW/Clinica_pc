@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Detalle de equipo{% endblock %}
+{% block content %}
+  {% if equipo %}
+    <h2>Detalle del equipo de {{ equipo.nombre }}</h2>
+    <p><strong>Cliente:</strong> {{ equipo.nombre }}</p>
+    <p><strong>Tipo de equipo:</strong> {{ equipo.tipo }}</p>
+    <p><strong>Problema informado:</strong> {{ equipo.problema }}</p>
+  {% else %}
+    <p>No se encontró el equipo solicitado.</p>
+  {% endif %}
+
+  <p><a href="{% url 'listado_equipos' %}">Volver al listado</a></p>
+{% endblock %}
