@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Reporte de entrega{% endblock %}
+{% block content %}
+  <h2>Registrar entrega de equipo</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label>Nombre del cliente:
+      <input type="text" name="nombre" required>
+    </label>
+    <label>Estado:
+      <select name="estado" required>
+        <option value="entregado">Entregado</option>
+        <option value="pendiente">Pendiente</option>
+      </select>
+    </label>
+    <label>Observaciones:
+      <textarea name="observaciones"></textarea>
+    </label>
+    <button type="submit">Guardar</button>
+  </form>
+
+  {% if mensaje %}
+    <p>{{ mensaje }}</p>
+  {% endif %}
+
+  <p><a href="{% url 'protected' %}">Volver al menú</a></p>
+{% endblock %}

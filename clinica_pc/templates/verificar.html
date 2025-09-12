@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Verificar equipo{% endblock %}
+{% block content %}
+  <h2>Verificar estado de equipo</h2>
+  <form method="get">
+    <label>Nombre del cliente:
+      <input type="text" name="nombre" required>
+    </label>
+    <button type="submit">Buscar</button>
+  </form>
+
+  {% if equipo %}
+    <h3>Equipo de {{ equipo.nombre }}</h3>
+    <p><strong>Tipo:</strong> {{ equipo.tipo }}</p>
+    <p><strong>Problema informado:</strong> {{ equipo.problema }}</p>
+
+    {% if equipo.estado %}
+      <p><strong>Estado:</strong> {{ equipo.estado }}</p>
+      <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
+      <a href="{% url 'comprobante' equipo.nombre %}">Ver comprobante</a>
+    {% else %}
+      <p>No tiene entrega registrada aún.</p>
+      <a href="{% url 'reporte_entrega' %}">Registrar entrega</a>
+    {% endif %}
+  {% elif equipo is not none %}
+    <p>No se encontró información del cliente.</p>
+  {% endif %}
+
+  <p><a href="{% url 'protected' %}">Volver al menú</a></p>
+{% endblock %}
