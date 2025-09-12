@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Evaluar equipo{% endblock %}
+{% block content %}
+<h2>Evaluar equipo: {{ nombre_equipo }}</h2>
+
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+  <label>Estudiante:
+    <input type="text" name="estudiante" value="{{ equipo.estudiante|default:'' }}" required>
+  </label><br>
+
+  <label>Diagnóstico:
+    <textarea name="diagnostico">{{ equipo.diagnostico|default:'' }}</textarea>
+  </label><br>
+
+  <label>Solución:
+    <textarea name="solucion">{{ equipo.solucion|default:'' }}</textarea>
+  </label><br>
+
+  <label>Estado:
+    <select name="estado">
+      <option value="asignado" {% if equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
+      <option value="finalizado" {% if equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
+    </select>
+  </label><br><br>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<p><a href="{% url 'diagnostico_listado' %}">Volver al listado</a></p>
+{% endblock %}
