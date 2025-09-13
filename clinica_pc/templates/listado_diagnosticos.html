@@ -24,12 +24,13 @@
             <td>{{ diag.solucion }}</td>
             <td>{{ diag.estado }}</td>
             <td>
-              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}">
+              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}" class="btn">
                 {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
               </a>
               |
               <a href="{% url 'diagnostico_eliminar' diag.nombre %}"
-                 onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');">
+                 onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');"
+                 class="btn">
                  Eliminar
               </a>
             </td>
@@ -58,7 +59,9 @@
             <td>{{ equipo.tipo }}</td>
             <td>{{ equipo.problema }}</td>
             <td>
-              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.nombre }}">Asignar diagnóstico</a>
+              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.nombre }}" class="btn">
+                Asignar diagnóstico
+              </a>
             </td>
           </tr>
         {% endfor %}
