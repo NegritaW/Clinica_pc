@@ -1,26 +1,64 @@
 {% extends "base.html" %}
+
 {% block title %}Evaluar equipo{% endblock %}
+
 {% block content %}
-  <div class="form-card">
-    <h2>Evaluar equipo</h2>
-    <form method="post">
-      {% csrf_token %}
-      <label>Estudiante:</label>
-      <input type="text" name="estudiante" value="{{ equipo.estudiante|default:'' }}" required>
+<div class="card">
+  <h2>Evaluar equipo</h2>
 
-      <label>Diagnóstico:</label>
-      <textarea name="diagnostico">{{ equipo.diagnostico|default:'' }}</textarea>
+  <form method="post">
+    {% csrf_token %}
 
-      <label>Solución:</label>
-      <input type="text" name="solucion" value="{{ equipo.solucion|default:'' }}">
-
-      <label>Estado:</label>
-      <select name="estado">
-        <option value="asignado" {% if equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
-        <option value="finalizado" {% if equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
+    <!-- Estudiante con SELECT -->
+    <div class="form-group">
+      <label for="estudiante">Estudiante:</label><br>
+      <select id="estudiante" name="estudiante" required>
+        <option value="">-- Selecciona un estudiante --</option>
+        {% for e in estudiantes %}
+          <option value="{{ e }}" {% if equipo and equipo.estudiante == e %}selected{% endif %}>
+            {{ e }}
+          </option>
+        {% endfor %}
       </select>
+    </div>
 
+    <!-- Diagnóstico -->
+    <div class="form-group">
+      <label for="diagnostico">Diagnóstico:</label><br>
+      <textarea id="diagnostico" name="diagnostico" rows="3" required>
+        {% if equipo %}{{ equipo.diagnostico }}{% endif %}
+      </textarea>
+    </div>
+
+    <!-- Solución -->
+    <div class="form-group">
+      <label for="solucion">Solución:</label><br>
+      <textarea id="solucion" name="solucion" rows="3" required>
+        {% if equipo %}{{ equipo.solucion }}{% endif %}
+      </textarea>
+    </div>
+
+    <!-- Estado -->
+    <div class="form-group">
+      <label for="estado">Estado:</label><br>
+      <select id="estado" name="estado" required>
+        <option value="asignado" {% if equipo and equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
+        <option value="finalizado" {% if equipo and equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
+      </select>
+    </div>
+
+    <!-- Botón -->
+    <div style="margin-top: 15px;">
       <button type="submit">Guardar</button>
-    </form>
-  </div>
+    </div>
+  </form>
+
+  {% if error %}
+    <p style="color: red; margin-top: 10px;">{{ error }}</p>
+  {% endif %}
+</div>
+
+<p style="margin-top: 20px;">
+  <a href="{% url 'diagnostico_listado' %}">Volver al listado</a>
+</p>
 {% endblock %}

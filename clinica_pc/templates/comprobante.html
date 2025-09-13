@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Comprobante{% endblock %}
 {% block content %}
-  <div class="form-card">
-    {% if equipo %}
-      <h2>Comprobante de entrega</h2>
-      <p><strong>Cliente:</strong> {{ equipo.nombre }}</p>
-      <p><strong>Estado:</strong> {{ equipo.estado }}</p>
-      <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
-      <p><em>Gracias por confiar en la Clínica PC</em></p>
-    {% else %}
-      <p>No se encontró información del comprobante.</p>
+
+<div class="form-card">
+  {% if equipo %}
+    <h2>Comprobante de entrega</h2>
+    <p><strong>Cliente:</strong> {{ equipo.nombre }}</p>
+
+    {% if equipo.estudiante %}
+      <p><strong>Estudiante:</strong> {{ equipo.estudiante }}</p>
     {% endif %}
-    <a class="btn" href="{% url 'protected' %}">Volver al menú</a>
-  </div>
+
+    <p><strong>Estado:</strong> {{ equipo.estado }}</p>
+    <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
+    <p><em>Gracias por confiar en la Clínica PC</em></p>
+  {% else %}
+    <p>No se encontró información del comprobante.</p>
+  {% endif %}
+
+  <a href="{% url 'protected' %}" class="btn">Volver al menú</a>
+</div>
+
 {% endblock %}

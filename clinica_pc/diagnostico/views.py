@@ -6,6 +6,12 @@ from recepcion.views import equipos_registrados   # importamos la lista en memor
 # Lista en memoria de diagnósticos (simulada)
 diagnosticos = []
 
+ESTUDIANTES = [
+    "Juan Pérez",
+    "María López",
+    "Carlos Díaz",
+    "Ana Torres"
+]
 @session_required
 def asignar_equipo(request):
     """
@@ -51,21 +57,11 @@ def evaluar_equipo(request):
         estado = request.POST.get("estado", "asignado")
 
         if diag:
-            # Editar diagnóstico existente
             diag["estudiante"] = estudiante
             diag["diagnostico"] = diagnostico_txt
             diag["solucion"] = solucion
             diag["estado"] = estado
         else:
-            # Evitar duplicados: no permitir asignar si ya está asignado
-            ya_asignado = any(d["nombre"] == nombre_equipo and d["estado"] != "finalizado" for d in diagnosticos)
-            if ya_asignado:
-                return render(request, "evaluar.html", {
-                    "equipo": None,
-                    "error": "Este equipo ya fue asignado. No se puede duplicar."
-                })
-
-            # Crear nuevo diagnóstico
             nuevo = {
                 "nombre": nombre_equipo,
                 "estudiante": estudiante,
@@ -77,7 +73,11 @@ def evaluar_equipo(request):
 
         return redirect("diagnostico_listado")
 
-    return render(request, "evaluar.html", {"equipo": diag, "nombre_equipo": nombre_equipo})
+    return render(request, "evaluar.html", {
+        "equipo": diag,
+        "nombre_equipo": nombre_equipo,
+        "estudiantes": ESTUDIANTES,  # 👈 pasamos la lista
+    })
 
 @session_required
 def listado_diagnosticos(request):
