@@ -1,27 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Reporte de entrega{% endblock %}
 {% block content %}
-  <div class="form-card">
-    <h2>Reporte de entrega</h2>
-    <form method="post">
-      {% csrf_token %}
-      <label>Nombre del cliente:</label>
-      <input type="text" name="nombre" required>
 
-      <label>Estado:</label>
-      <select name="estado" required>
-        <option value="pendiente">Pendiente</option>
-        <option value="entregado">Entregado</option>
-      </select>
+<div class="form-card">
+  <h2>Registrar entrega</h2>
 
-      <label>Observaciones:</label>
-      <textarea name="observaciones"></textarea>
+  <form method="post">
+    {% csrf_token %}
+    <p><strong>Cliente:</strong> {{ nombre }}</p>
+    <input type="hidden" name="nombre" value="{{ nombre }}">
 
-      <button type="submit">Guardar</button>
-    </form>
+    <label for="estado">Estado:</label>
+    <select id="estado" name="estado" required>
+      <option value="entregado">Entregado</option>
+      <option value="pendiente">Pendiente</option>
+    </select>
 
-    {% if mensaje %}
-      <p>{{ mensaje }}</p>
-    {% endif %}
-  </div>
+    <label for="observaciones">Observaciones:</label>
+    <textarea id="observaciones" name="observaciones"></textarea>
+
+    <button type="submit" class="btn">Guardar</button>
+  </form>
+
+  {% if mensaje %}
+    <p style="color: red;">{{ mensaje }}</p>
+  {% endif %}
+</div>
+
 {% endblock %}
