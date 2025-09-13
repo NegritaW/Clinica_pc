@@ -1,14 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Menú principal{% endblock %}
 {% block content %}
-  <h2>Bienvenido al sistema de Clínica PC</h2>
-  <p>Has iniciado sesión correctamente.</p>
-
-  <ul>
-    <li><a href="{% url 'registrar_equipo' %}">Recepción de equipos</a></li>
-    <li><a href="{% url 'diagnostico_listado' %}">Listado de diagnósticos</a></li>
-    <li><a href="{% url 'verificar_equipo' %}">Entrega de equipos</a></li>
-  </ul>
-
-  <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>
+  <div class="form-card">
+    <h2>Bienvenido a Clínica PC - INACAP</h2>
+    <p>Has iniciado sesión correctamente.</p>
+  </div>
 {% endblock %}
