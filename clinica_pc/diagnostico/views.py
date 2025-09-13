@@ -50,6 +50,21 @@ def evaluar_equipo(request):
     nombre_equipo = request.GET.get("nombre")
     diag = next((d for d in diagnosticos if d["nombre"] == nombre_equipo), None)
 
+    # 👇 Si aún no existe en diagnosticos, lo traemos desde equipos_registrados
+    if not diag:
+        equipo_base = next((e for e in equipos_registrados if e["nombre"] == nombre_equipo), None)
+        if equipo_base:
+            diag = {
+                "nombre": equipo_base["nombre"],
+                "tipo": equipo_base["tipo"],
+                "problema": equipo_base["problema"],
+                "estudiante": "",
+                "diagnostico": "",
+                "solucion": "",
+                "estado": "asignado",
+            }
+            diagnosticos.append(diag)
+
     if request.method == "POST":
         estudiante = request.POST.get("estudiante", "").strip()
         diagnostico_txt = request.POST.get("diagnostico", "").strip()
@@ -61,22 +76,13 @@ def evaluar_equipo(request):
             diag["diagnostico"] = diagnostico_txt
             diag["solucion"] = solucion
             diag["estado"] = estado
-        else:
-            nuevo = {
-                "nombre": nombre_equipo,
-                "estudiante": estudiante,
-                "diagnostico": diagnostico_txt,
-                "solucion": solucion,
-                "estado": estado,
-            }
-            diagnosticos.append(nuevo)
 
         return redirect("diagnostico_listado")
 
     return render(request, "evaluar.html", {
         "equipo": diag,
         "nombre_equipo": nombre_equipo,
-        "estudiantes": ESTUDIANTES,  # 👈 pasamos la lista
+        "estudiantes": ESTUDIANTES,
     })
 
 @session_required
