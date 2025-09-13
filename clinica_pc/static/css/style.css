@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-bar, .bottom-bar {
+  background-color: #ff0000ff; /* rojo vibrante */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.top-bar img {
+  height: 40px;
+}
+
+.content {
+  min-height: calc(100vh - 120px); /* resta 60px top + 60px bottom */
+  padding: 20px;
+  display: flex;
+  justify-content: center; /* centra horizontal */
+  text-align: center;      /* centra texto */
+  flex-direction: column;
+}
+
+/* 🔴 Botones globales */
+button, .btn {
+  background-color: #d60000; /* rojo INACAP */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none; /* para <a> con clase .btn */
+  display: inline-block;
+}
+
+button:hover, .btn:hover {
+  background-color: #a00000; /* rojo más oscuro */
+}
+
+.navbar {
+  margin-left: auto; /* empuja menú a la derecha */
+  display: flex;
+  gap: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.form-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 900px; /* límite opcional */
+  margin: 0 auto;
+  overflow-x: auto; /* habilita scroll horizontal si la tabla se pasa */
+}
+
+.form-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-card label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-card button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.styled-table {
+  width: 100%; /* siempre ocupará el ancho disponible de la card */
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.styled-table th, .styled-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap; /* evita que el texto se rompa raro */
+}
+
+.styled-table th {
+  background-color: #d60000;
+  color: white;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.styled-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.card-row {
+  display: flex;
+  gap: 20px;          /* separación entre cards */
+  align-items: stretch; /* estira las cards al mismo alto */
+}
+
+.card-row .form-card {
+  flex: 1;            /* ambas ocupan el mismo ancho */
+  display: flex;
+  flex-direction: column;
+}

@@ -1,35 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Evaluar equipo{% endblock %}
 {% block content %}
-<h2>Evaluar equipo: {{ nombre_equipo }}</h2>
+  <div class="form-card">
+    <h2>Evaluar equipo</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label>Estudiante:</label>
+      <input type="text" name="estudiante" value="{{ equipo.estudiante|default:'' }}" required>
 
-{% if error %}
-  <p style="color:red;">{{ error }}</p>
-{% endif %}
+      <label>Diagnóstico:</label>
+      <textarea name="diagnostico">{{ equipo.diagnostico|default:'' }}</textarea>
 
-<form method="post">
-  {% csrf_token %}
-  <label>Estudiante:
-    <input type="text" name="estudiante" value="{{ equipo.estudiante|default:'' }}" required>
-  </label><br>
+      <label>Solución:</label>
+      <input type="text" name="solucion" value="{{ equipo.solucion|default:'' }}">
 
-  <label>Diagnóstico:
-    <textarea name="diagnostico">{{ equipo.diagnostico|default:'' }}</textarea>
-  </label><br>
+      <label>Estado:</label>
+      <select name="estado">
+        <option value="asignado" {% if equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
+        <option value="finalizado" {% if equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
+      </select>
 
-  <label>Solución:
-    <textarea name="solucion">{{ equipo.solucion|default:'' }}</textarea>
-  </label><br>
-
-  <label>Estado:
-    <select name="estado">
-      <option value="asignado" {% if equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
-      <option value="finalizado" {% if equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
-    </select>
-  </label><br><br>
-
-  <button type="submit">Guardar</button>
-</form>
-
-<p><a href="{% url 'diagnostico_listado' %}">Volver al listado</a></p>
+      <button type="submit">Guardar</button>
+    </form>
+  </div>
 {% endblock %}

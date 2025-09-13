@@ -1,19 +1,33 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Clínica PC - INACAP</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    .box { max-width: 540px; margin: auto; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; }
-    .error { color: red; }
-    label { display:block; margin-top:0.5rem; }
-  </style>
+  <meta charset="UTF-8">
+  <title>{% block title %}Clínica PC{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <div class="box">
-    <h1>{% block title %}Clínica PC{% endblock %}</h1>
+  <!-- Franja superior con logo y menú -->
+  <div class="top-bar">
+    <img src="{% static 'img/logo-inacap.png' %}" alt="Logo Inacap">
+
+    {% if request.session.autenticado %}
+      <!-- Menú de navegación -->
+      <nav class="navbar">
+        <a href="{% url 'registrar_equipo' %}">Recepción</a>
+        <a href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
+        <a href="{% url 'verificar_equipo' %}">Entrega</a>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+      </nav>
+    {% endif %}
+  </div>
+
+  <!-- Contenido central -->
+  <div class="content">
     {% block content %}{% endblock %}
   </div>
+
+  <!-- Franja inferior -->
+  <div class="bottom-bar"></div>
 </body>
 </html>

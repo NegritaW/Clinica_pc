@@ -1,26 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Registrar equipo{% endblock %}
 {% block content %}
-  <h2>Registrar equipo</h2>
-  <form method="post">
-    {% csrf_token %}
-    <label>Nombre del cliente:
+  <div class="form-card">
+    <h2>Registrar equipo</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label>Nombre del cliente:</label>
       <input type="text" name="nombre" required>
-    </label>
-    <label>Tipo de equipo:
-      <input type="text" name="tipo" required>
-    </label>
-    <label>Problema informado:
-      <textarea name="problema" required></textarea>
-    </label>
-    <button type="submit">Registrar</button>
-  </form>
 
-  {% if mensaje %}
-    <p>{{ mensaje }}</p>
-    
-  {% endif %}
-  
-  <p><a href="{% url 'listado_equipos' %}">Ir al listado</a></p>
-  <p><a href="{% url 'protected' %}">Volver al menú</a></p>
+      <label>Tipo de equipo:</label>
+      <input type="text" name="tipo" required>
+
+      <label>Problema informado:</label>
+      <textarea name="problema" required></textarea>
+
+      <button type="submit">Registrar</button>
+    </form>
+
+    {% if mensaje %}
+      <p>{{ mensaje }}</p>
+    {% endif %}
+  </div>
 {% endblock %}

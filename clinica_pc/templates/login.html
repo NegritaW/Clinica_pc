@@ -1,20 +1,34 @@
 {% extends "base.html" %}
+
 {% block title %}Iniciar sesión{% endblock %}
+
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-    <label>Usuario:
-      <input name="username" type="text" required />
-    </label>
-    <label>Clave:
-      <input name="password" type="password" required />
-    </label>
-    <button type="submit">Ingresar</button>
-  </form>
+  <div class="form-card">
+    <h2>Inicia sesión</h2>
 
-  {% if error %}
-    <p class="error">{{ error }}</p>
-  {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div>
+        <label for="username">Usuario:</label><br>
+        <input id="username" name="username" type="text" required>
+      </div>
 
-  <p>Credenciales de prueba: <strong>inacap / clinica2025</strong></p>
+      <div style="margin-top: 10px;">
+        <label for="password">Clave:</label><br>
+        <input id="password" name="password" type="password" required>
+      </div>
+
+      <div style="margin-top: 15px;">
+        <button type="submit" class="btn">Ingresar</button>
+      </div>
+    </form>
+
+    {% if error %}
+      <p style="color: red; margin-top: 10px;">{{ error }}</p>
+    {% endif %}
+
+    <p style="margin-top: 20px; font-size: 14px; color: gray;">
+      Credenciales de prueba: <strong>inacap / clinica2025</strong>
+    </p>
+  </div>
 {% endblock %}
