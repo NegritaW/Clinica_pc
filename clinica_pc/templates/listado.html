@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Listado de equipos{% endblock %}
 {% block content %}
+
+  {% if messages %}
+    <div class="form-card">
+      {% for message in messages %}
+        <div class="alert 
+          {% if message.tags == 'success' %}alert-success{% endif %}
+          {% if message.tags == 'error' %}alert-error{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="form-card">
     <h2>Listado de equipos registrados</h2>
 

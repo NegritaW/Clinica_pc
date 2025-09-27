@@ -6,6 +6,16 @@
   <!-- Primera card: diagnósticos -->
   <div class="form-card">
     <h2>Listado de diagnósticos</h2>
+
+    <!-- 👇 Bloque de mensajes -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     {% if diagnosticos %}
       <table class="styled-table">
         <tr>
@@ -22,7 +32,15 @@
             <td>{{ diag.estudiante }}</td>
             <td>{{ diag.diagnostico }}</td>
             <td>{{ diag.solucion }}</td>
-            <td>{{ diag.estado }}</td>
+            <td>
+              <span class="estado 
+                {% if diag.estado == 'asignado' %}estado-asignado{% endif %}
+                {% if diag.estado == 'en progreso' %}estado-progreso{% endif %}
+                {% if diag.estado == 'finalizado' %}estado-finalizado{% endif %}
+              ">
+                {{ diag.estado }}
+              </span>
+            </td>
             <td>
               <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}" class="btn">
                 {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
