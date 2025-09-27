@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib import messages              # 👈 agregado
 from login.views import session_required
 from recepcion.views import equipos_registrados   # importamos la lista en memoria
 
@@ -12,6 +13,7 @@ ESTUDIANTES = [
     "Carlos Díaz",
     "Ana Torres"
 ]
+
 @session_required
 def asignar_equipo(request):
     """
@@ -27,6 +29,7 @@ def asignar_equipo(request):
         equipo = next((e for e in equipos_registrados if e['nombre'] == nombre), None)
         if not estudiante or not equipo:
             mensaje = "Complete estudiante y seleccione un equipo válido."
+            messages.error(request, mensaje)
         else:
             # crear registro de diagnóstico (estado: asignado)
             registro = {
@@ -39,6 +42,7 @@ def asignar_equipo(request):
                 'estado': 'asignado',
             }
             diagnosticos.append(registro)
+            messages.success(request, f"Equipo {equipo['nombre']} asignado a {estudiante}.")
             # redirigir a evaluar con el nombre del equipo en querystring
             return redirect(reverse('diagnostico_evaluar') + f'?nombre={equipo["nombre"]}')
     # GET: mostrar formulario
@@ -50,7 +54,7 @@ def evaluar_equipo(request):
     nombre_equipo = request.GET.get("nombre")
     diag = next((d for d in diagnosticos if d["nombre"] == nombre_equipo), None)
 
-    # 👇 Si aún no existe en diagnosticos, lo traemos desde equipos_registrados
+    # Si aún no existe en diagnosticos, lo traemos desde equipos_registrados
     if not diag:
         equipo_base = next((e for e in equipos_registrados if e["nombre"] == nombre_equipo), None)
         if equipo_base:
@@ -72,10 +76,16 @@ def evaluar_equipo(request):
         estado = request.POST.get("estado", "asignado")
 
         if diag:
+            estado_previo = diag.get("estado", "")
             diag["estudiante"] = estudiante
             diag["diagnostico"] = diagnostico_txt
             diag["solucion"] = solucion
             diag["estado"] = estado
+
+            if estado_previo != estado:
+                messages.success(request, f"Estado de {nombre_equipo} cambiado de '{estado_previo}' a '{estado}'.")
+            else:
+                messages.success(request, f"Diagnóstico de {nombre_equipo} actualizado correctamente.")
 
         return redirect("diagnostico_listado")
 
@@ -84,6 +94,7 @@ def evaluar_equipo(request):
         "nombre_equipo": nombre_equipo,
         "estudiantes": ESTUDIANTES,
     })
+
 
 @session_required
 def listado_diagnosticos(request):
@@ -96,8 +107,10 @@ def listado_diagnosticos(request):
         "equipos_sin_diag": equipos_sin_diag,
     })
 
+
 @session_required
 def eliminar_diagnostico(request, nombre):
     global diagnosticos
     diagnosticos = [d for d in diagnosticos if d["nombre"] != nombre]
+    messages.success(request, f"Diagnóstico de {nombre} eliminado.")
     return redirect("diagnostico_listado")

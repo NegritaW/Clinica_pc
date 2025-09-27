@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages  
 from login.views import session_required
 
 # Lista simulada de equipos (diccionarios)
@@ -6,7 +7,6 @@ equipos_registrados = []
 
 @session_required
 def registrar_equipo(request):
-    mensaje = None
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         tipo = request.POST.get('tipo')
@@ -19,11 +19,12 @@ def registrar_equipo(request):
                 'problema': problema,
             }
             equipos_registrados.append(equipo)
-            mensaje = f"Equipo de {nombre} registrado correctamente."
+            messages.success(request, f"Equipo de {nombre} registrado correctamente.")
+            return redirect('listado_equipos')
         else:
-            mensaje = "Todos los campos son obligatorios."
+            messages.error(request, "Todos los campos son obligatorios.")
 
-    return render(request, 'registrar.html', {'mensaje': mensaje})
+    return render(request, 'registrar.html')
 
 @session_required
 def listado_equipos(request):
