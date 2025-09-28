@@ -24,6 +24,12 @@
 
   <!-- Contenido central -->
   <div class="content">
+    {% if messages %}
+      <div class="messages">
+        <p class="message {{ message.tags }}">{{ message }}</p>
+      </div>
+    {% endif %}
+
     {% block content %}{% endblock %}
   </div>
 
