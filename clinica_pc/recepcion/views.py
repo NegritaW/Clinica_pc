@@ -21,6 +21,7 @@ def registrar_equipo(request):
             equipos_registrados.append(equipo)
             # ✅ usamos messages y redirigimos
             messages.success(request, f"Equipo de {nombre} registrado correctamente.")
+            messages.success(request, "Ahora puedes diagnosticarlo en 'Diagnóstico'.")
             return redirect('listado_equipos')
         else:
             messages.error(request, "Todos los campos son obligatorios.")

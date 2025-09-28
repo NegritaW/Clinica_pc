@@ -32,29 +32,20 @@ def reporte_entrega(request):
     mensaje_tipo = None  # para colorear el mensaje en el template
 
     if request.method == "POST":
-        estado = request.POST.get("estado")
         observaciones = request.POST.get("observaciones")
         equipo = next((e for e in equipos_registrados if e["nombre"] == nombre), None)
 
         if equipo:
             entrega = {
                 "nombre": nombre,
-                "estado": estado,
+                "estado": "entregado",
                 "observaciones": observaciones,
             }
             entregas[:] = [e for e in entregas if e["nombre"] != nombre]
             entregas.append(entrega)
 
-            # mensaje de confirmación según el estado
-            if estado == "entregado":
-                mensaje = f"✅ El equipo de {nombre} fue marcado como ENTREGADO correctamente."
-                mensaje_tipo = "success"
-            elif estado == "pendiente":
-                mensaje = f"⚠️ El equipo de {nombre} quedó en estado PENDIENTE."
-                mensaje_tipo = "warning"
-            else:
-                mensaje = f"❌ El equipo de {nombre} fue marcado como {estado.upper()}."
-                mensaje_tipo = "error"
+            mensaje = f"✅ El equipo de {nombre} fue marcado como ENTREGADO correctamente."
+            mensaje_tipo = "success"
 
             return redirect("comprobante", nombre=nombre)
         else:

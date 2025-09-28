@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages              # 👈 agregado
 from login.views import session_required
 from recepcion.views import equipos_registrados   # importamos la lista en memoria
+from entrega.views import entregas
 
 # Lista en memoria de diagnósticos (simulada)
 diagnosticos = []
@@ -53,6 +54,11 @@ def asignar_equipo(request):
 def evaluar_equipo(request):
     nombre_equipo = request.GET.get("nombre")
     diag = next((d for d in diagnosticos if d["nombre"] == nombre_equipo), None)
+    entrega_info = next((e for e in entregas if e["nombre"] == nombre_equipo and e["estado"] == "entregado"), None)
+    
+    if entrega_info:
+        messages.error(request, f"El equipo {nombre_equipo} ya fue entregado, no se puede editar su diagnóstico.")
+        return redirect("diagnostico_listado")
 
     # Si aún no existe en diagnosticos, lo traemos desde equipos_registrados
     if not diag:
