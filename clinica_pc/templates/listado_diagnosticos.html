@@ -24,7 +24,6 @@
           <th>Diagnóstico</th>
           <th>Solución</th>
           <th>Estado</th>
-          <th>Acciones</th>
         </tr>
         {% for diag in diagnosticos %}
           <tr>
@@ -33,23 +32,17 @@
             <td>{{ diag.diagnostico }}</td>
             <td>{{ diag.solucion }}</td>
             <td>
-              <span class="estado 
-                {% if diag.estado == 'asignado' %}estado-asignado{% endif %}
-                {% if diag.estado == 'en progreso' %}estado-progreso{% endif %}
-                {% if diag.estado == 'finalizado' %}estado-finalizado{% endif %}
-              ">
-                {{ diag.estado }}
-              </span>
-            </td>
-            <td>
-              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}" class="btn">
-                {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
-              </a>
+              {% if diag.nombre in entregados %}
+                <span style="color: gray;">Bloqueado</span>
+              {% else %}
+                <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}" class="btn">
+                  {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
+                </a>
+              {% endif %}
               |
               <a href="{% url 'diagnostico_eliminar' diag.nombre %}"
-                 onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');"
-                 class="btn">
-                 Eliminar
+                 onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');" class="btn">
+                Eliminar
               </a>
             </td>
           </tr>
