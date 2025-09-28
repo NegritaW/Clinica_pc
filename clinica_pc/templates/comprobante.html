@@ -11,7 +11,17 @@
       <p><strong>Estudiante:</strong> {{ equipo.estudiante }}</p>
     {% endif %}
 
-    <p><strong>Estado:</strong> {{ equipo.estado }}</p>
+    <p>
+      <strong>Estado:</strong> 
+      <span 
+        {% if equipo.estado == "entregado" %} style="color: green; font-weight: bold;" 
+        {% elif equipo.estado == "pendiente" %} style="color: orange; font-weight: bold;"
+        {% else %} style="color: red; font-weight: bold;" 
+        {% endif %}>
+        {{ equipo.estado }}
+      </span>
+    </p>
+
     <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
     <p><em>Gracias por confiar en la Clínica PC</em></p>
   {% else %}

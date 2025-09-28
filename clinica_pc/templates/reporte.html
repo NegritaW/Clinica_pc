@@ -23,7 +23,14 @@
   </form>
 
   {% if mensaje %}
-    <p style="color: red;">{{ mensaje }}</p>
+    <p
+      {% if mensaje_tipo == "success" %} style="color: green; font-weight: bold;"
+      {% elif mensaje_tipo == "warning" %} style="color: orange; font-weight: bold;"
+      {% elif mensaje_tipo == "error" %} style="color: red; font-weight: bold;"
+      {% endif %}
+    >
+      {{ mensaje }}
+    </p>
   {% endif %}
 </div>
 
