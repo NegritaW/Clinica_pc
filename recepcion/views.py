@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils.html import format_html
 from login.views import session_required
 
 # Lista simulada de equipos (diccionarios)
@@ -21,7 +22,7 @@ def registrar_equipo(request):
             equipos_registrados.append(equipo)
             # ✅ usamos messages y redirigimos
             messages.success(request, f"Equipo de {nombre} registrado correctamente.")
-            messages.success(request, "Ahora puedes diagnosticarlo en 'Diagnóstico'.")
+            messages.success(request, format_html('Ahora puedes diagnosticarlo en <a href="{}">Diagnostico</a>', '/diagnostico/listado'))
             return redirect('listado_equipos')
         else:
             messages.error(request, "Todos los campos son obligatorios.")
