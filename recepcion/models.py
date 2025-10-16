@@ -1,22 +1,13 @@
 from django.db import models
-
-# Create your models here.
-class Cliente(models.Model):
-  nombre_cliente = models.CharField(max_length=100)
-  tipo_equipo = models.CharField(max_length=100)
-  problema_reportado = models.CharField(max_length=100)
-  creado = models.DateTimeField(auto_now_add=True)
-
-  def __str__(self):
-    return self.nombre
-  
-  class Meta:
-    ordering = ['-creado']
+from login.models import Usuario
 
 class Recepcion(models.Model):
-  fecha_recepcion = models.DateTimeField(auto_now_add=True)
-  recepcionista = models.CharField(max_length=150, blank=True)  # opcional: puede luego hacerse FK a RoleRecepcion
+  cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='recepciones_cliente')
+  recepcionista = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, related_name='recepciones_recepcionista')
+  tipo_equipo = models.CharField(max_length=100)
+  problema_reportado = models.TextField()
   observaciones = models.TextField(blank=True)
+  fecha_recepcion = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
-      return f"Recepción {self.id} - {self.fecha_recepcion:%d-%m-%Y %H:%M}"
+    return f"Recepción {self.id} - {self.cliente.nombre_completo}"
