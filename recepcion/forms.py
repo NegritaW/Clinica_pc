@@ -1,3 +1,4 @@
+'''
 from django import forms
 from .models import Recepcion
 
@@ -12,3 +13,4 @@ class RecepcionForm(forms.ModelForm):
       'problema_reportado': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Describa el problema'}),
       'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
     }
+'''

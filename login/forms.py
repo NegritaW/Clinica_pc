@@ -1,3 +1,4 @@
+'''
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Usuario
@@ -54,3 +55,4 @@ class AsignarRolForm(forms.ModelForm):
             'rol': 'Rol del usuario',
             'is_active': 'Activo',
         }
+'''
