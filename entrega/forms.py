@@ -1,3 +1,4 @@
+'''
 from django import forms
 from .models import Entrega
 
@@ -10,3 +11,4 @@ class EntregaForm(forms.ModelForm):
             'entregado_por': forms.Select(attrs={'class': 'form-select'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Observaciones de entrega'}),
         }
+'''

@@ -1,2 +1,6 @@
 entornoclinica
 .entornoclinica
+
+#env
+env
+.env
