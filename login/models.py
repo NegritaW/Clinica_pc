@@ -6,6 +6,7 @@ class Usuario(AbstractUser):
         ("admin", "Administrador"),
         ("tecnico", "Técnico / Diagnóstico"),
         ("recepcion", "Recepción / Entrega"),
+        ("cliente", "Cliente"),
     ]
 
     nombre_completo = models.CharField(max_length=150)
