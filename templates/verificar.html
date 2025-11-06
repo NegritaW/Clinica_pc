@@ -4,13 +4,14 @@
 
 <div class="form-card">
   <h2>Verificar estado de equipo</h2>
+
   <form method="get">
     <label for="nombre">Selecciona cliente:</label>
     <select id="nombre" name="nombre" required>
       <option value="">-- Selecciona un cliente --</option>
-      {% for equipo in equipos %}
-        <option value="{{ equipo.nombre }}" {% if request.GET.nombre == equipo.nombre %}selected{% endif %}>
-          {{ equipo.nombre }} — {{ equipo.tipo }}
+      {% for e in equipos %}
+        <option value="{{ e.id }}" {% if request.GET.nombre == e.id|stringformat:"s" %}selected{% endif %}>
+          {{ e.cliente.nombre_completo }} — {{ e.tipo }}
         </option>
       {% endfor %}
     </select>
@@ -19,30 +20,30 @@
 
   {% if equipo %}
     <div style="margin-top: 20px; text-align: left;">
-      <h3>Equipo de {{ equipo.nombre }}</h3>
+      <h3>Equipo de {{ equipo.cliente.nombre_completo }}</h3>
       <p><strong>Tipo:</strong> {{ equipo.tipo }}</p>
-      <p><strong>Problema informado:</strong> {{ equipo.problema }}</p>
+      <p><strong>Problema informado:</strong> {{ equipo.problema_reportado }}</p>
 
-      {% if equipo.estudiante %}
-        <p><strong>Estudiante asignado:</strong> {{ equipo.estudiante }}</p>
+      {% if diag %}
+        <p><strong>Técnico asignado:</strong> 
+          {% if diag.tecnico %}
+            {{ diag.tecnico.username }}
+          {% else %}
+            No asignado
+          {% endif %}
+        </p>
+        <p><strong>Estado diagnóstico:</strong> {{ diag.get_estado_display }}</p>
       {% endif %}
 
-      {% if equipo.estado %}
-        <p>
-          <strong>Estado:</strong> 
-          <span 
-            {% if equipo.estado == "entregado" %} style="color: green; font-weight: bold;" 
-            {% elif equipo.estado == "pendiente" %} style="color: orange; font-weight: bold;"
-            {% else %} style="color: red; font-weight: bold;" 
-            {% endif %}>
-            {{ equipo.estado }}
-          </span>
+      {% if entrega %}
+        <p><strong>Estado entrega:</strong> 
+          <span style="color: green; font-weight: bold;">{{ entrega.estado }}</span>
         </p>
-        <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
-        <a href="{% url 'comprobante' equipo.nombre %}" class="btn">Ver comprobante</a>
+        <p><strong>Observaciones:</strong> {{ entrega.observaciones }}</p>
+        <a href="{% url 'comprobante' equipo.id %}" class="btn">Ver comprobante</a>
       {% else %}
         <p>No tiene entrega registrada aún.</p>
-        <a href="{% url 'reporte_entrega' %}?nombre={{ equipo.nombre }}" class="btn">Registrar entrega</a>
+        <a href="{% url 'reporte_entrega' %}?nombre={{ equipo.id }}" class="btn">Registrar entrega</a>
       {% endif %}
     </div>
   {% elif equipo is not none %}

@@ -1,33 +1,38 @@
 {% extends "base.html" %}
-{% block title %}Comprobante{% endblock %}
+{% block title %}Comprobante de entrega{% endblock %}
 {% block content %}
 
 <div class="form-card">
-  {% if equipo %}
+  {% if entrega %}
     <h2>Comprobante de entrega</h2>
-    <p><strong>Cliente:</strong> {{ equipo.nombre }}</p>
 
-    {% if equipo.estudiante %}
-      <p><strong>Estudiante:</strong> {{ equipo.estudiante }}</p>
+    <p><strong>Cliente:</strong> {{ recepcion.cliente.nombre_completo }}</p>
+    <p><strong>Tipo de equipo:</strong> {{ recepcion.tipo }}</p>
+    <p><strong>Problema informado:</strong> {{ recepcion.problema_reportado }}</p>
+
+    {% if diagnostico %}
+      <p><strong>Técnico:</strong> {{ diagnostico.tecnico.username if diagnostico.tecnico else "No asignado" }}</p>
+      <p><strong>Estado diagnóstico:</strong> {{ diagnostico.get_estado_display }}</p>
     {% endif %}
 
     <p>
-      <strong>Estado:</strong> 
-      <span 
-        {% if equipo.estado == "entregado" %} style="color: green; font-weight: bold;" 
-        {% else %} style="color: red; font-weight: bold;" 
-        {% endif %}>
-        {{ equipo.estado }}
-      </span>
+      <strong>Estado de entrega:</strong> 
+      <span style="color: green; font-weight: bold;">{{ entrega.estado|upper }}</span>
     </p>
 
-    <p><strong>Observaciones:</strong> {{ equipo.observaciones }}</p>
+    <p><strong>Observaciones:</strong> {{ entrega.observaciones|default:"(Sin observaciones)" }}</p>
+    <p><strong>Fecha de entrega:</strong> {{ entrega.fecha_entrega|date:"d/m/Y H:i" }}</p>
+
+    <hr>
     <p><em>Gracias por confiar en la Clínica PC</em></p>
+
   {% else %}
     <p>No se encontró información del comprobante.</p>
   {% endif %}
 
-  <a href="{% url 'protected' %}" class="btn">Volver al menú</a>
+  <div style="margin-top: 20px;">
+    <a href="{% url 'verificar_equipo' %}" class="btn">Volver</a>
+  </div>
 </div>
 
 {% endblock %}

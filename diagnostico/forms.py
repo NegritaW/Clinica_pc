@@ -1,4 +1,3 @@
-'''
 from django import forms
 from .models import Diagnostico
 
@@ -13,4 +12,3 @@ class DiagnosticoForm(forms.ModelForm):
             'solucion_text': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Ingrese la solución aplicada'}),
             'estado': forms.Select(attrs={'class': 'form-select'}),
         }
-'''

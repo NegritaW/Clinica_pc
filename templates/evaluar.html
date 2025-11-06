@@ -1,61 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Evaluar equipo{% endblock %}
 {% block content %}
-
 <div class="form-card">
   <h2>Evaluar equipo</h2>
 
-  <!-- 👇 Bloque de mensajes -->
   {% if messages %}
-    <div class="messages">
-      {% for message in messages %}
-        <div class="alert {{ message.tags }}">{{ message }}</div>
-      {% endfor %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div style="margin-top: 15px;">
+      <button type="submit" class="btn">Guardar</button>
+      <a href="{% url 'diagnostico_listado' %}" class="btn">Volver al listado</a>
     </div>
-  {% endif %}
-
-  {% if equipo %}
-    <form method="post">
-      {% csrf_token %}
-      
-      <div>
-        <label for="estudiante">Estudiante:</label><br>
-        <select id="estudiante" name="estudiante" required>
-          <option value="">-- Selecciona un estudiante --</option>
-          {% for est in estudiantes %}
-            <option value="{{ est }}" {% if equipo.estudiante == est %}selected{% endif %}>{{ est }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div style="margin-top: 10px;">
-        <label for="diagnostico">Diagnóstico:</label><br>
-        <textarea id="diagnostico" name="diagnostico" rows="3">{{ equipo.diagnostico }}</textarea>
-      </div>
-
-      <div style="margin-top: 10px;">
-        <label for="solucion">Solución:</label><br>
-        <textarea id="solucion" name="solucion" rows="3">{{ equipo.solucion }}</textarea>
-      </div>
-
-      <div style="margin-top: 10px;">
-        <label for="estado">Estado:</label><br>
-        <select id="estado" name="estado">
-          <option value="asignado" {% if equipo.estado == "asignado" %}selected{% endif %}>Asignado</option>
-          <option value="en progreso" {% if equipo.estado == "en progreso" %}selected{% endif %}>En progreso</option>
-          <option value="finalizado" {% if equipo.estado == "finalizado" %}selected{% endif %}>Finalizado</option>
-        </select>
-      </div>
-
-      <div style="margin-top: 15px;">
-        <button type="submit" class="btn">Guardar</button>
-        <a href="{% url 'diagnostico_listado' %}" class="btn">Volver al listado</a>
-      </div>
-    </form>
-  {% else %}
-    <p>No se encontró información del equipo.</p>
-    <a href="{% url 'diagnostico_listado' %}" class="btn">Volver al listado</a>
-  {% endif %}
+  </form>
 </div>
-
 {% endblock %}

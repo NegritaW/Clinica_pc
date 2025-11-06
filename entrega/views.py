@@ -1,76 +1,52 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from login.views import session_required
-from recepcion.views import equipos_registrados
-
-# Simulación: lista de entregas
-entregas = []
+from django.contrib import messages
+from .models import Entrega
+from .forms import EntregaForm
+from recepcion.models import Recepcion
+from diagnostico.models import Diagnostico
 
 @session_required
 def verificar_equipo(request):
+    equipos = Recepcion.objects.all()
     equipo = None
     nombre = request.GET.get("nombre")
+
     if nombre:
-        equipo = next((e for e in equipos_registrados if e["nombre"] == nombre), None)
-        entrega_info = next((en for en in entregas if en["nombre"] == nombre), None)
-        if entrega_info:
-            equipo = {**equipo, **entrega_info}
-        # buscar también si tiene estudiante asignado en diagnósticos
-        from diagnostico.views import diagnosticos
-        diag = next((d for d in diagnosticos if d["nombre"] == nombre), None)
-        if diag:
-            equipo["estudiante"] = diag["estudiante"]
+        equipo = get_object_or_404(Recepcion, id=nombre)
+        entrega = Entrega.objects.filter(recepcion=equipo).first()
+        diag = Diagnostico.objects.filter(recepcion=equipo).first()
+    else:
+        entrega = diag = None
 
     return render(request, "verificar.html", {
         "equipo": equipo,
-        "equipos": equipos_registrados,
+        "equipos": equipos,
+        "entrega": entrega,
+        "diag": diag,
     })
 
 @session_required
 def reporte_entrega(request):
-    nombre = request.GET.get("nombre") or request.POST.get("nombre")
-    mensaje = None
-    mensaje_tipo = None  # para colorear el mensaje en el template
-
     if request.method == "POST":
-        observaciones = request.POST.get("observaciones")
-        equipo = next((e for e in equipos_registrados if e["nombre"] == nombre), None)
+        form = EntregaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Entrega registrada correctamente.")
+            return redirect("comprobante", nombre=form.cleaned_data['recepcion'].id)
+    else:
+        form = EntregaForm()
 
-        if equipo:
-            entrega = {
-                "nombre": nombre,
-                "estado": "entregado",
-                "observaciones": observaciones,
-            }
-            entregas[:] = [e for e in entregas if e["nombre"] != nombre]
-            entregas.append(entrega)
-
-            mensaje = f"✅ El equipo de {nombre} fue marcado como ENTREGADO correctamente."
-            mensaje_tipo = "success"
-
-            return redirect("comprobante", nombre=nombre)
-        else:
-            mensaje = "El cliente no existe en recepción."
-            mensaje_tipo = "error"
-
-    return render(request, "reporte.html", {
-        "mensaje": mensaje,
-        "mensaje_tipo": mensaje_tipo,
-        "nombre": nombre
-    })
+    return render(request, "reporte.html", {"form": form})
 
 @session_required
 def comprobante(request, nombre):
-    equipo = next((e for e in entregas if e["nombre"] == nombre), None)
-    if equipo:
-        # recuperar equipo base
-        base = next((e for e in equipos_registrados if e["nombre"] == nombre), None)
-        if base:
-            equipo = {**base, **equipo}
+    entrega = get_object_or_404(Entrega, recepcion_id=nombre)
+    recepcion = entrega.recepcion
+    diagnostico = Diagnostico.objects.filter(recepcion=recepcion).first()
 
-        # buscar estudiante asignado en diagnósticos
-        from diagnostico.views import diagnosticos
-        diag = next((d for d in diagnosticos if d["nombre"] == nombre), None)
-        if diag:
-            equipo["estudiante"] = diag["estudiante"]
-
-    return render(request, "comprobante.html", {"equipo": equipo})
+    return render(request, "comprobante.html", {
+        "entrega": entrega,
+        "recepcion": recepcion,
+        "diagnostico": diagnostico,
+    })
