@@ -6,16 +6,16 @@
   <div class="form-card">
     <h2>Inicia sesión</h2>
 
-    <form method="post">
+    <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       <div>
         <label for="username">Usuario:</label><br>
-        <input id="username" name="username" type="text" required>
+        <input id="username" name="username" type="text" required class="form-control">
       </div>
 
       <div style="margin-top: 10px;">
         <label for="password">Clave:</label><br>
-        <input id="password" name="password" type="password" required>
+        <input id="password" name="password" type="password" required class="form-control">
       </div>
 
       <div style="margin-top: 15px;">
@@ -27,7 +27,16 @@
       <p style="color: red; margin-top: 10px;">{{ error }}</p>
     {% endif %}
 
-    <p style="margin-top: 20px; font-size: 14px; color: gray;">
+    <hr style="margin: 20px 0;">
+
+    <p style="text-align: center; font-size: 14px;">
+      ¿No tienes una cuenta?
+      <a href="{% url 'loginregistro'%}" style="color: #007bff; text-decoration: none;">
+        Regístrate aquí
+      </a>
+    </p>
+
+    <p style="margin-top: 15px; font-size: 13px; color: gray; text-align: center;">
       Credenciales de prueba: <strong>inacap / clinica2025</strong>
     </p>
   </div>

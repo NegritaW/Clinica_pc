@@ -1,41 +1,80 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from functools import wraps
-
-VALID_USERNAME = 'inacap'
-VALID_PASSWORD = 'clinica2025'
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.urls import reverse
+from .forms import RegistrarUsuario
+from django.contrib import messages
 
 def login_view(request):
-    error = None
+    """
+    Login real usando Django auth.
+    Si el usuario existe y está activo, inicia sesión.
+    """
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
 
-        if username == VALID_USERNAME and password == VALID_PASSWORD:
-            # guardar la sesión
-            request.session['autenticado'] = True
-            # debug: muestra en consola del servidor el contenido de la sesión
-            print("SESSION after login:", dict(request.session.items()))
-            # redirigir a protegido
-            return redirect('protected')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                auth_login(request, user)
+                # Redirigir según rol o a protected
+                return redirect('login:protected')
+            else:
+                # Usuario inactivo (pendiente de activación por admin)
+                error = "Tu cuenta aún no ha sido activada. Contacta al administrador."
+                return render(request, 'login.html', {'error': error})
         else:
             error = 'Usuario o clave incorrectos.'
-    return render(request, 'login.html', {'error': error})
+            return render(request, 'login.html', {'error': error})
+    # GET
+    return render(request, 'login.html', {})
+
 
 def logout_view(request):
-    # limpiar sesión
-    request.session.flush()
-    return redirect('home')  # o 'login' si prefieres
+    auth_logout(request)
+    return redirect('home')
+
 
 def session_required(view_func):
+    """
+    Decorador que protege vistas: requiere usuario autenticado y activo.
+    Si no lo está, redirige al login.
+    """
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        # debug: imprimir estado de sesión en consola
-        print("SESSION on protected check:", dict(request.session.items()))
-        if not request.session.get('autenticado', False):
+        if not request.user.is_authenticated or not request.user.is_active:
             return redirect('login')
         return view_func(request, *args, **kwargs)
     return wrapper
 
+
 @session_required
 def protected_view(request):
-    return render(request, 'protected.html')
+    """
+    Vista protegida: muestra menú y opciones según rol del usuario.
+    """
+    user = request.user
+    # Puedes ajustarlo para que muestre otras cosas por rol
+    return render(request, 'protected.html', {'user_role': user.rol, 'user': user})
+
+
+def register_view(request):
+    """
+    Registrar usuario con formulario UserCreationForm personalizado.
+    Los usuarios quedan inactivos por defecto y el admin deberá activarlos.
+    """
+    if request.method == 'POST':
+        form = RegistrarUsuario(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # No activar automáticamente (ya lo maneja tu modelo is_active=False por defecto)
+            user.is_active = False
+            # No asignamos rol aquí (admin lo asigna después)
+            user.rol = None
+            user.save()
+            messages.success(request, "Registro realizado. Espera a que el administrador active tu cuenta.")
+            return redirect('login')
+    else:
+        form = RegistrarUsuario()
+    return render(request, 'loginregistro.html', {'form': form})
