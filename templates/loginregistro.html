@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Registro de usuario{% endblock %}
+
+{% block content %}
+  <div class="form-card">
+    <h2>Registrar usuario</h2>
+
+    <form method="post" action="{% url 'loginregistro' %}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div>
+        {{ form.username.label_tag }}<br>
+        {{ form.username }}
+        {{ form.username.errors }}
+      </div>
+
+      <div style="margin-top:10px;">
+        {{ form.nombre_completo.label_tag }}<br>
+        {{ form.nombre_completo }}
+        {{ form.nombre_completo.errors }}
+      </div>
+
+      <div style="margin-top:10px;">
+        {{ form.password1.label_tag }}<br>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+      </div>
+
+      <div style="margin-top:10px;">
+        {{ form.password2.label_tag }}<br>
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+      </div>
+
+      <div style="margin-top:15px;">
+        <button type="submit" class="btn">Registrar</button>
+        <a href="{% url 'login' %}" class="btn">Volver al login</a>
+      </div>
+    </form>
+
+    {% if messages %}
+      {% for m in messages %}
+        <p style="color: green; margin-top:10px;">{{ m }}</p>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}

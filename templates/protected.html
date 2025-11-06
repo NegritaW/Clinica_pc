@@ -4,6 +4,32 @@
   <div class="form-card">
     <h2>Bienvenido a Clínica PC - INACAP</h2>
     <p>Has iniciado sesión correctamente.</p>
-    <p>Ahora puedes empezar a recepcionar equipos.<p>
+
+    <div style="margin-top: 10px;">
+      <p><strong>Usuario:</strong> {{ user.username }} — {{ user.nombre_completo }}</p>
+      <p><strong>Rol:</strong> {{ user_role|default:"(sin rol asignado)" }}</p>
+    </div>
+
+    <div style="margin-top: 15px;">
+      {% if user_role == "admin" %}
+        <a class="btn" href="{% url 'registrar_equipo' %}">Recepción (Admin)</a>
+        <a class="btn" href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
+        <a class="btn" href="{% url 'verificar_equipo' %}">Entrega</a>
+        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+
+      {% elif user_role == "tecnico" %}
+        <a class="btn" href="{% url 'diagnostico_listado' %}">Ir a Diagnóstico</a>
+        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+
+      {% elif user_role == "recepcion" %}
+        <a class="btn" href="{% url 'registrar_equipo' %}">Recepción</a>
+        <a class="btn" href="{% url 'verificar_equipo' %}">Entrega</a>
+        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+
+      {% else %}
+        <p>Tu cuenta aún no tiene un rol asignado. Contacta al administrador.</p>
+        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
