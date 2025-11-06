@@ -7,7 +7,7 @@
   <div class="form-card">
     <h2>Listado de diagnósticos</h2>
 
-    <!-- 👇 Bloque de mensajes -->
+    <!-- Bloque de mensajes -->
     {% if messages %}
       <div class="messages">
         {% for message in messages %}
@@ -20,30 +20,38 @@
       <table class="styled-table">
         <tr>
           <th>Cliente</th>
-          <th>Estudiante</th>
+          <th>Técnico</th>
           <th>Diagnóstico</th>
           <th>Solución</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
         {% for diag in diagnosticos %}
           <tr>
-            <td>{{ diag.nombre }}</td>
-            <td>{{ diag.estudiante }}</td>
-            <td>{{ diag.diagnostico }}</td>
-            <td>{{ diag.solucion }}</td>
+            <td>{{ diag.recepcion.cliente.nombre_completo }}</td>
             <td>
-              {% if diag.nombre in entregados %}
-                <span style="color: gray;">Bloqueado</span>
+              {% if diag.tecnico %}
+                {{ diag.tecnico.username }}
               {% else %}
-                <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.nombre }}" class="btn">
+                Sin técnico
+              {% endif %}
+            </td>
+            <td>{{ diag.diagnostico_text|default:"-" }}</td>
+            <td>{{ diag.solucion_text|default:"-" }}</td>
+            <td>{{ diag.get_estado_display }}</td>
+            <td>
+              {% if diag.recepcion.id in entregados %}
+                <span style="color: gray;">Bloqueado (entregado)</span>
+              {% else %}
+                <a href="{% url 'diagnostico_evaluar' %}?nombre={{ diag.recepcion.id }}" class="btn">
                   {% if diag.estado == "asignado" %}Evaluar{% else %}Editar{% endif %}
                 </a>
+                |
+                <a href="{% url 'diagnostico_eliminar' diag.recepcion.id %}"
+                   onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');" class="btn">
+                  Eliminar
+                </a>
               {% endif %}
-              |
-              <a href="{% url 'diagnostico_eliminar' diag.nombre %}"
-                 onclick="return confirm('¿Seguro que deseas eliminar este diagnóstico?');" class="btn">
-                Eliminar
-              </a>
             </td>
           </tr>
         {% endfor %}
@@ -66,11 +74,11 @@
         </tr>
         {% for equipo in equipos_sin_diag %}
           <tr>
-            <td>{{ equipo.nombre }}</td>
+            <td>{{ equipo.cliente.nombre_completo }}</td>
             <td>{{ equipo.tipo }}</td>
-            <td>{{ equipo.problema }}</td>
+            <td>{{ equipo.problema_reportado }}</td>
             <td>
-              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.nombre }}" class="btn">
+              <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.id }}" class="btn">
                 Asignar diagnóstico
               </a>
             </td>
