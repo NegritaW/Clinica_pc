@@ -19,7 +19,7 @@ def login_view(request):
             if user.is_active:
                 auth_login(request, user)
                 # Redirigir según rol o a protected
-                return redirect('login:protected')
+                return redirect('protected')
             else:
                 # Usuario inactivo (pendiente de activación por admin)
                 error = "Tu cuenta aún no ha sido activada. Contacta al administrador."
@@ -74,7 +74,7 @@ def register_view(request):
             user.rol = None
             user.save()
             messages.success(request, "Registro realizado. Espera a que el administrador active tu cuenta.")
-            return redirect('login')
+            messages.success(request, "Ya puedes volver a login")
     else:
         form = RegistrarUsuario()
     return render(request, 'loginregistro.html', {'form': form})
