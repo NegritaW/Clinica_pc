@@ -7,26 +7,22 @@
 
   <form method="post">
     {% csrf_token %}
-    <label for="nombre">Cliente:</label>
-    <input type="text" id="nombre" name="nombre" required>
-
-    <label for="tipo">Tipo de equipo:</label>
-    <input type="text" id="tipo" name="tipo" required>
-
-    <label for="problema">Problema informado:</label>
-    <textarea id="problema" name="problema" required></textarea>
+    {{ form.as_p }}
 
     <button type="submit" class="btn">Registrar</button>
   </form>
 
-  {% if mensaje %}
-    <div 
-      {% if mensaje_tipo == "success" %} style="color: green; font-weight: bold; margin-top: 15px;"
-      {% elif mensaje_tipo == "warning" %} style="color: orange; font-weight: bold; margin-top: 15px;"
-      {% elif mensaje_tipo == "error" %} style="color: red; font-weight: bold; margin-top: 15px;"
-      {% endif %}
-    >
-      {{ mensaje }}
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div 
+          {% if message.tags == "success" %}style="color: green; font-weight: bold;"
+          {% elif message.tags == "error" %}style="color: red; font-weight: bold;"
+          {% endif %}
+        >
+          {{ message }}
+        </div>
+      {% endfor %}
     </div>
   {% endif %}
 

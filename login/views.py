@@ -19,7 +19,7 @@ def login_view(request):
             if user.is_active:
                 auth_login(request, user)
                 # Redirigir según rol o a protected
-                return redirect('login:protected')
+                return redirect('protected')
             else:
                 # Usuario inactivo (pendiente de activación por admin)
                 error = "Tu cuenta aún no ha sido activada. Contacta al administrador."
