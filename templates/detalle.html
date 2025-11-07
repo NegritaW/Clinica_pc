@@ -3,10 +3,13 @@
 {% block content %}
   <div class="form-card">
     {% if equipo %}
-      <h2>Detalle del equipo de {{ equipo.nombre }}</h2>
-      <p><strong>Cliente:</strong> {{ equipo.nombre }}</p>
-      <p><strong>Tipo de equipo:</strong> {{ equipo.tipo }}</p>
-      <p><strong>Problema informado:</strong> {{ equipo.problema }}</p>
+      <h2>Detalle del equipo de {{ equipo.cliente.nombre_completo }}</h2>
+      <p><strong>Cliente:</strong> {{ equipo.cliente.nombre_completo }}</p>
+      <p><strong>Recepcionista:</strong> {{ equipo.recepcionista.nombre_completo }}</p>
+      <p><strong>Tipo de equipo:</strong> {{ equipo.tipo_equipo }}</p>
+      <p><strong>Problema informado:</strong> {{ equipo.problema_reportado }}</p>
+      <p><strong>Observaciones:</strong> {{ equipo.observaciones|default:"—" }}</p>
+      <p><strong>Fecha de recepción:</strong> {{ equipo.fecha_recepcion|date:"d/m/Y H:i" }}</p>
     {% else %}
       <p>No se encontró el equipo solicitado.</p>
     {% endif %}
