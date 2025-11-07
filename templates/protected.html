@@ -15,20 +15,20 @@
         <a class="btn" href="{% url 'registrar_equipo' %}">Recepción (Admin)</a>
         <a class="btn" href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
         <a class="btn" href="{% url 'verificar_equipo' %}">Entrega</a>
-        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+        <a class="btn" href="{% url 'logout' %}">Cerrar sesión</a>
 
       {% elif user_role == "tecnico" %}
         <a class="btn" href="{% url 'diagnostico_listado' %}">Ir a Diagnóstico</a>
-        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+        <a class="btn" href="{% url 'logout' %}">Cerrar sesión</a>
 
       {% elif user_role == "recepcion" %}
         <a class="btn" href="{% url 'registrar_equipo' %}">Recepción</a>
         <a class="btn" href="{% url 'verificar_equipo' %}">Entrega</a>
-        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+        <a class="btn" href="{% url 'logout' %}">Cerrar sesión</a>
 
       {% else %}
         <p>Tu cuenta aún no tiene un rol asignado. Contacta al administrador.</p>
-        <a class="btn" href="{% url 'login:logout' %}">Cerrar sesión</a>
+        <a class="btn" href="{% url 'logout' %}">Cerrar sesión</a>
       {% endif %}
     </div>
   </div>

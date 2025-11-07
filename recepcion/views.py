@@ -1,41 +1,41 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils.html import format_html
 from login.views import session_required
+from .forms import RecepcionForm
+from .models import Recepcion
 
-# Lista simulada de equipos (diccionarios)
-equipos_registrados = []
 
 @session_required
 def registrar_equipo(request):
+    """Registrar una nueva recepción de equipo"""
     if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        tipo = request.POST.get('tipo')
-        problema = request.POST.get('problema')
-
-        if nombre and tipo and problema:
-            equipo = {
-                'nombre': nombre,
-                'tipo': tipo,
-                'problema': problema,
-            }
-            equipos_registrados.append(equipo)
-            # ✅ usamos messages y redirigimos
-            messages.success(request, f"Equipo de {nombre} registrado correctamente.")
-            messages.success(request, format_html('Ahora puedes diagnosticarlo en <a href="{}">Diagnostico</a>', '/diagnostico/listado'))
+        form = RecepcionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            cliente = form.cleaned_data['cliente']
+            messages.success(request, f"Equipo de {cliente} registrado correctamente.")
+            messages.success(request, format_html(
+                'Ahora puedes diagnosticarlo en <a href="{}">Diagnóstico</a>', '/diagnostico/listado'
+            ))
             return redirect('listado_equipos')
         else:
-            messages.error(request, "Todos los campos son obligatorios.")
+            messages.error(request, "Corrige los errores antes de continuar.")
+    else:
+        form = RecepcionForm()
 
-    return render(request, 'registrar.html')  # sin pasar mensaje directo
+    return render(request, 'registrar.html', {'form': form})
 
 
 @session_required
 def listado_equipos(request):
-    return render(request, 'listado.html', {'equipos': equipos_registrados})
+    """Mostrar todas las recepciones registradas"""
+    equipos = Recepcion.objects.select_related('cliente', 'recepcionista').order_by('-fecha_recepcion')
+    return render(request, 'listado.html', {'equipos': equipos})
 
 
 @session_required
 def detalle_equipo(request, nombre):
-    equipo = next((e for e in equipos_registrados if e['nombre'] == nombre), None)
+    """Mostrar detalle de una recepción específica (por nombre del cliente)"""
+    equipo = get_object_or_404(Recepcion, cliente__nombre_completo=nombre)
     return render(request, 'detalle.html', {'equipo': equipo})
