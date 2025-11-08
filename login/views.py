@@ -74,7 +74,7 @@ def register_view(request):
             user.rol = None
             user.save()
             messages.success(request, "Registro realizado. Espera a que el administrador active tu cuenta.")
-            return redirect('login')
+            messages.success(request, "Ya puedes volver a login")
     else:
         form = RegistrarUsuario()
     return render(request, 'loginregistro.html', {'form': form})
