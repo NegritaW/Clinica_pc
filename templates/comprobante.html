@@ -7,11 +7,15 @@
     <h2>Comprobante de entrega</h2>
 
     <p><strong>Cliente:</strong> {{ recepcion.cliente.nombre_completo }}</p>
-    <p><strong>Tipo de equipo:</strong> {{ recepcion.tipo }}</p>
+    <p><strong>Tipo de equipo:</strong> {{ recepcion.tipo_equipo }}</p>
     <p><strong>Problema informado:</strong> {{ recepcion.problema_reportado }}</p>
 
     {% if diagnostico %}
-      <p><strong>Técnico:</strong> {{ diagnostico.tecnico.username if diagnostico.tecnico else "No asignado" }}</p>
+      {% if diagnostico.tecnico %}
+        <p><strong>Técnico:</strong> {{ diagnostico.tecnico.username }}</p>
+      {% else %}
+        <p><strong>Técnico:</strong> No asignado</p>
+      {% endif %}
       <p><strong>Estado diagnóstico:</strong> {{ diagnostico.get_estado_display }}</p>
     {% endif %}
 

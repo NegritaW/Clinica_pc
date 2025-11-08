@@ -11,7 +11,7 @@
       <option value="">-- Selecciona un cliente --</option>
       {% for e in equipos %}
         <option value="{{ e.id }}" {% if request.GET.nombre == e.id|stringformat:"s" %}selected{% endif %}>
-          {{ e.cliente.nombre_completo }} — {{ e.tipo }}
+          {{ e.cliente.nombre_completo }}  {{ e.tipo }}
         </option>
       {% endfor %}
     </select>
@@ -21,7 +21,7 @@
   {% if equipo %}
     <div style="margin-top: 20px; text-align: left;">
       <h3>Equipo de {{ equipo.cliente.nombre_completo }}</h3>
-      <p><strong>Tipo:</strong> {{ equipo.tipo }}</p>
+      <p><strong>Tipo equipo:</strong> {{ equipo.tipo_equipo}}</p>
       <p><strong>Problema informado:</strong> {{ equipo.problema_reportado }}</p>
 
       {% if diag %}

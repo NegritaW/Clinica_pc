@@ -4,7 +4,7 @@ from .models import Diagnostico
 class DiagnosticoForm(forms.ModelForm):
     class Meta:
         model = Diagnostico
-        fields = ['recepcion', 'tecnico', 'diagnostico_text', 'solucion_text', 'estado']
+        fields = ['recepcion', 'tecnico', 'diagnostico', 'solucion', 'estado']
         widgets = {
             'recepcion': forms.Select(attrs={'class': 'form-select'}),
             'tecnico': forms.Select(attrs={'class': 'form-select'}),

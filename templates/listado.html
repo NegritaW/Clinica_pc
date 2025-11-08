@@ -38,7 +38,7 @@
               <td>{{ equipo.problema_reportado|truncatechars:40 }}</td>
               <td>{{ equipo.fecha_recepcion|date:"d/m/Y H:i" }}</td>
               <td>
-                <a class="btn" href="{% url 'detalle_equipo' equipo.cliente.nombre_completo %}">Ver detalle</a>
+                <a class="btn" href="{% url 'detalle_equipo' equipo.id %}">Ver detalle</a>
               </td>
             </tr>
           {% endfor %}
