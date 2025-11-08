@@ -11,8 +11,8 @@ class Diagnostico(models.Model):
 
     recepcion = models.ForeignKey(Recepcion, on_delete=models.CASCADE, related_name='diagnosticos')
     tecnico = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, related_name='diagnosticos_tecnico')
-    diagnostico_text = models.TextField(blank=True)
-    solucion_text = models.TextField(blank=True)
+    diagnostico = models.TextField(blank=True)
+    solucion = models.TextField(blank=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='asignado')
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)

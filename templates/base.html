@@ -7,29 +7,37 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <!-- Franja superior con logo y menú -->
+  <!--  Franja superior -->
   <div class="top-bar">
-    <img src="{% static 'img/logo-inacap.png' %}" alt="Logo Inacap">
+    <div class="left-section">
+      <img src="{% static 'img/logo-inacap.png' %}" alt="Logo Inacap">
+      {% if user.is_authenticated %}
+        <span>Hola, {{ user.nombre_completo }}</span>
+      {% endif %}
+    </div>
 
-    {% if request.session.autenticado %}
-      <!-- Menú de navegación -->
-      <nav class="navbar">
-        <a href="{% url 'registrar_equipo' %}">Recepción</a>
-        <a href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
-        <a href="{% url 'verificar_equipo' %}">Entrega</a>
-        <a href="{% url 'logout' %}">Cerrar sesión</a>
-      </nav>
+    {% if user.is_authenticated %}
+      <div class="right-section">
+        {% if user.rol == "admin" %}
+          <a href="{% url 'registrar_equipo' %}">Recepción</a>
+          <a href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
+          <a href="{% url 'verificar_equipo' %}">Entrega</a>
+
+        {% elif user.rol == "tecnico" %}
+          <a href="{% url 'diagnostico_listado' %}">Diagnóstico</a>
+
+        {% elif user.rol == "recepcion" %}
+          <a href="{% url 'registrar_equipo' %}">Recepción</a>
+          <a href="{% url 'verificar_equipo' %}">Entrega</a>
+        {% endif %}
+
+        <a href="{% url 'logout' %}" class="logout">Cerrar sesión</a>
+      </div>
     {% endif %}
   </div>
 
   <!-- Contenido central -->
   <div class="content">
-    {% if messages %}
-      <div class="messages">
-        <p class="message {{ message.tags }}">{{ message }}</p>
-      </div>
-    {% endif %}
-
     {% block content %}{% endblock %}
   </div>
 

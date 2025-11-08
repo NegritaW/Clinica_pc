@@ -16,7 +16,7 @@ def registrar_equipo(request):
             cliente = form.cleaned_data['cliente']
             messages.success(request, f"Equipo de {cliente} registrado correctamente.")
             messages.success(request, format_html(
-                'Ahora puedes diagnosticarlo en <a href="{}">Diagnóstico</a>', '/diagnostico/listado'
+                'Ahora un tecnico puede diagnosticarlo'
             ))
             return redirect('listado_equipos')
         else:
@@ -35,7 +35,7 @@ def listado_equipos(request):
 
 
 @session_required
-def detalle_equipo(request, nombre):
-    """Mostrar detalle de una recepción específica (por nombre del cliente)"""
-    equipo = get_object_or_404(Recepcion, cliente__nombre_completo=nombre)
+def detalle_equipo(request, id):
+    """Mostrar detalle de una recepción específica (por id del cliente)"""
+    equipo = get_object_or_404(Recepcion, id=id)
     return render(request, 'detalle.html', {'equipo': equipo})

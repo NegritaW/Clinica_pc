@@ -15,18 +15,53 @@ body {
   height: 40px;
 }
 
+/*  Nueva estructura para la barra superior */
+.top-bar {
+  justify-content: space-between;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+  font-weight: bold;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.right-section a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.right-section a:hover {
+  text-decoration: underline;
+}
+
+.logout {
+  color: white;
+  font-weight: bold;
+}
+
 .content {
-  min-height: calc(100vh - 120px); /* resta 60px top + 60px bottom */
+  min-height: calc(100vh - 120px);
   padding: 20px;
   display: flex;
-  justify-content: center; /* centra horizontal */
-  text-align: center;      /* centra texto */
+  justify-content: center;
+  text-align: center;
   flex-direction: column;
 }
 
-/* 🔴 Botones globales */
+/*  Botones globales */
 button, .btn {
-  background-color: #d60000; /* rojo INACAP */
+  background-color: #d60000;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -34,16 +69,17 @@ button, .btn {
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  text-decoration: none; /* para <a> con clase .btn */
+  text-decoration: none;
   display: inline-block;
 }
 
 button:hover, .btn:hover {
-  background-color: #a00000; /* rojo más oscuro */
+  background-color: #a00000;
 }
 
+/*  Navbar (para fallback o compatibilidad) */
 .navbar {
-  margin-left: auto; /* empuja menú a la derecha */
+  margin-left: auto;
   display: flex;
   gap: 20px;
 }
@@ -58,14 +94,15 @@ button:hover, .btn:hover {
   text-decoration: underline;
 }
 
+/*  Formulario base */
 .form-card {
   background: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  max-width: 900px; /* límite opcional */
+  max-width: 900px;
   margin: 0 auto;
-  overflow-x: auto; /* habilita scroll horizontal si la tabla se pasa */
+  overflow-x: auto;
 }
 
 .form-card h2 {
@@ -94,8 +131,9 @@ button:hover, .btn:hover {
   margin-top: 20px;
 }
 
+/*  Tablas */
 .styled-table {
-  width: 100%; /* siempre ocupará el ancho disponible de la card */
+  width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
   font-size: 14px;
@@ -105,7 +143,7 @@ button:hover, .btn:hover {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
-  white-space: nowrap; /* evita que el texto se rompa raro */
+  white-space: nowrap;
 }
 
 .styled-table th {
@@ -123,17 +161,17 @@ button:hover, .btn:hover {
 
 .card-row {
   display: flex;
-  gap: 20px;          /* separación entre cards */
-  align-items: stretch; /* estira las cards al mismo alto */
+  gap: 20px;
+  align-items: stretch;
 }
 
 .card-row .form-card {
-  flex: 1;            /* ambas ocupan el mismo ancho */
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Mensajes */
+/*  Mensajes */
 .messages {
   margin: 10px 0;
 }

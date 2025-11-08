@@ -36,8 +36,8 @@
                 Sin técnico
               {% endif %}
             </td>
-            <td>{{ diag.diagnostico_text|default:"-" }}</td>
-            <td>{{ diag.solucion_text|default:"-" }}</td>
+            <td>{{ diag.diagnostico|default:"-" }}</td>
+            <td>{{ diag.solucion|default:"-" }}</td>
             <td>{{ diag.get_estado_display }}</td>
             <td>
               {% if diag.recepcion.id in entregados %}
@@ -68,14 +68,14 @@
       <table class="styled-table">
         <tr>
           <th>Cliente</th>
-          <th>Tipo</th>
+          <th>Tipo equipo</th>
           <th>Problema</th>
           <th>Acción</th>
         </tr>
         {% for equipo in equipos_sin_diag %}
           <tr>
             <td>{{ equipo.cliente.nombre_completo }}</td>
-            <td>{{ equipo.tipo }}</td>
+            <td>{{ equipo.tipo_equipo }}</td>
             <td>{{ equipo.problema_reportado }}</td>
             <td>
               <a href="{% url 'diagnostico_evaluar' %}?nombre={{ equipo.id }}" class="btn">
