@@ -9,4 +9,9 @@ urlpatterns = [
     path('recepcion/', include('recepcion.urls')),
     path('diagnostico/', include('diagnostico.urls')),           
     path('entrega/', include('entrega.urls')),
+    #rutas api uwu
+    path("api/login/", include("login.urls")),
+    path("api/recepcion/", include("recepcion.urls")),
+    path("api/diagnostico/", include("diagnostico.urls")),
+    path("api/entrega/", include("entrega.urls")),
 ]
