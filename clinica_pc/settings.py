@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'recepcion',
     'diagnostico',
     'entrega',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

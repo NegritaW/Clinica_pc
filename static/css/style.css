@@ -202,3 +202,20 @@ button:hover, .btn:hover {
   color: #155724;
   font-weight: bold;
 }
+
+/*Link de registro bonito uwu*/
+.link-registro {
+    color: #dc1010; /* rojo brillante como mi amor por ya saben quien */
+    text-decoration: none;
+    font-weight: 600;
+    transition: 
+        color 0.3s ease,
+        text-shadow 0.3s ease,
+        transform 0.2s ease;
+}
+
+.link-registro:hover {
+    color: #b80e0e; /* rojo más oscuro al pasar el mouse */
+    text-shadow: 0 0 8px rgba(220, 16, 16, 0.6); /* glow rojito */
+    transform: scale(1.07); /* pequeño zoom bonito */
+}
