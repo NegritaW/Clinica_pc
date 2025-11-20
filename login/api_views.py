@@ -1,11 +1,11 @@
-from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from .models import Usuario
 from .serializers import UsuarioSerializer
 
-class UsuarioListAPI(generics.ListCreateAPIView):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
 
-class UsuarioDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
+@api_view(['GET'])
+def usuario_list_api(request):
+    usuarios = Usuario.objects.all()
+    serializer = UsuarioSerializer(usuarios, many=True)
+    return Response(serializer.data)
