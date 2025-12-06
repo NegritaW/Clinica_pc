@@ -39,3 +39,15 @@ def api_modificar_usuario(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# -------------------- DELETE - Eliminar Usuario --------------------
+@api_view(['DELETE'])
+def api_eliminar_usuario(request, pk):
+    try:
+        usuario = Usuario.objects.get(pk=pk)
+    except Usuario.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'},
+        status=status.HTTP_404_NOT_FOUND)
+    
+    usuario.delete()
+    return Response({'mensaje': 'Usuario eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)
